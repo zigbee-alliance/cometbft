@@ -1,12 +1,11 @@
 ---
 order: 1
-title: Overview
+title: Specification
 parent:
-  title: Spec
-  order: 7
+  order: 1
 ---
 
-# CometBFT Spec
+# Specification
 
 This is a markdown specification of CometBFT.
 It defines the base data structures, how they are validated,

@@ -1,7 +1,7 @@
 ---
-order: 1
+order: 2
 parent:
-  order: false
+  order: 1
 ---
 
 # Architecture Decision Records (ADR)
