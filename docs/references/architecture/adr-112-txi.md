@@ -13,10 +13,12 @@ TBD
 Transaction hashing in CometBFT is currently implemented using `tmhash`
 package, which itself relies on `sha256` to calculate a transaction's hash.
 
-The hash is then used to calculate various hashes in CometBFT (e.g., tx,
-evidence, consensus params), by the built-in indexer (to index this
+The hash is then used by the built-in indexer (to index this
 transaction) and by the RPC `tx` and `tx_search` endpoints, which allow users
 to search for a transaction using a hash.
+
+`tmhash` is also used to calculate various hashes in CometBFT (e.g.,
+evidence, consensus params, commit, header, partset header).
 
 The problem some application developers are facing is a mismatch between the
 internal/app representation of transactions and the one employed by CometBFT. For
@@ -59,14 +61,15 @@ func DefaultHashFn() HashFn {
 }
 ```
 
-And then use it to calculate a transaction's hash, consensus parameters hash, etc.
+And then use it to calculate a transaction's hash.
 
 ## Consequences
 
 ### Positive
 
 - Modular transaction hashing
-- Paving a way for the pluggable cryptography
+- Paving a way for the pluggable cryptography. hashFn can later be used to
+  calculate header's hash, evidence hash.
 
 ### Negative
 
@@ -78,4 +81,4 @@ And then use it to calculate a transaction's hash, consensus parameters hash, et
 
 - [Original issue](https://github.com/tendermint/tendermint/issues/6539)
 
-- [rlp]: https://ethereum.org/developers/docs/data-structures-and-encoding/rlp
+[rlp]: https://ethereum.org/developers/docs/data-structures-and-encoding/rlp
