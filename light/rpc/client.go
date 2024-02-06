@@ -136,6 +136,16 @@ func (c *Client) ABCIQueryWithOptions(ctx context.Context, path string, data cmt
 	// always request the proof
 	opts.Prove = true
 
+	// Can't return the latest block results because we won't be able to
+	// prove them. Return the results for the previous block instead.
+	if opts.Height == 0 {
+		res, err := c.next.Status(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("can't get latest height: %w", err)
+		}
+		opts.Height = res.SyncInfo.LatestBlockHeight - 1
+	}
+
 	res, err := c.next.ABCIQueryWithOptions(ctx, path, data, opts)
 	if err != nil {
 		return nil, err
